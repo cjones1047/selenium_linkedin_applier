@@ -43,6 +43,7 @@ class EasyApply:
         time.sleep(5)
         input()
         self.current_page = 1
+        self.applications_submitted = 0
         self.build_job_posting_list()
 
     def build_job_posting_list(self):
@@ -58,12 +59,25 @@ class EasyApply:
             print(job.text)
             self.apply_to_job(job)
         else:
-            self.current_page += 1
+            self.next_page()
+
+    def next_page(self):
+        self.current_page += 1
+        try:
             next_page_button = self.driver.find_element(by=By.CSS_SELECTOR,
                                                         value=f'button[aria-label="Page {self.current_page}"]')
+        except NoSuchElementException:
+            self.summarize()
+        else:
             next_page_button.click()
             time.sleep(2)
             self.build_job_posting_list()
+
+    def summarize(self):
+        print("\n")
+        print("Done")
+        print(f"Total applications submitted: {self.applications_submitted}")
+        self.driver.quit()
 
     def apply_to_job(self, job):
         job.click()
@@ -109,6 +123,7 @@ class EasyApply:
         except NoSuchElementException:
             print("Application submitted.")
             print()
+            self.applications_submitted += 1
         finally:
             time.sleep(1)
 
