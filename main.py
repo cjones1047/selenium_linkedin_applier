@@ -38,7 +38,10 @@ class EasyApply:
         self.driver.get(sign_in_page_link)
         username_box = self.driver.find_element(by=By.ID, value="username")
         username_box.send_keys(self.linkedin_username, Keys.TAB, self.linkedin_password, Keys.ENTER)
-        input("Click here and press 'ENTER' after passing bot detection...")
+        self.driver.minimize_window()
+        print("Come back here and hit 'ENTER' key after passing bot detection...")
+        time.sleep(5)
+        input()
         self.current_page = 1
         self.build_job_posting_list()
 
