@@ -28,8 +28,8 @@ class EasyApply:
         # chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         # chrome_options.add_argument("disable-infobars")
         self.driver = webdriver.Chrome(options=chrome_options)
-        flask_job_postings_url = ("https://www.linkedin.com/jobs/search/?distance=25&f_AL=true&"
-                                  "f_T=25169&f_WT=2&geoId=103644278&keywords=flask")
+        flask_job_postings_url = ("https://www.linkedin.com/jobs/search/?currentJobId=3467611151&distance=25&f_AL=true&"
+                                  "f_T=25169&f_TPR=r604800&f_WT=2&geoId=103644278&keywords=flask")
         self.driver.get(flask_job_postings_url)
         sign_in = self.driver.find_element(by=By.CSS_SELECTOR, value=('a[data-tracking-control-name='
                                                                       '"public_jobs_conversion-modal-signin"]'))
@@ -102,6 +102,7 @@ class EasyApply:
             pass
 
         try:
+            time.sleep(1)
             submit_application_button = self.driver.find_element(by=By.CSS_SELECTOR,
                                                                  value='button[aria-label="Submit application"]')
             submit_application_button.click()
@@ -111,15 +112,15 @@ class EasyApply:
             self.close_application()
 
     def close_application(self):
+        time.sleep(1)
         dismiss_button = self.driver.find_element(by=By.CSS_SELECTOR,
                                                   value='button[aria-label="Dismiss"]')
         dismiss_button.click()
         time.sleep(1)
         try:
-            confirm_button = self.driver.find_element(by=By.CSS_SELECTOR,
-                                                      value=('button[data-control-name='
-                                                             '"discard_application_confirm_btn"]'))
-            confirm_button.click()
+            save_button = self.driver.find_element(by=By.CSS_SELECTOR,
+                                                   value='button[data-control-name="save_application_btn"]')
+            save_button.click()
         except NoSuchElementException:
             print("Application submitted.")
             print()
